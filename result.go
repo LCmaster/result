@@ -1,6 +1,9 @@
 package result
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 type ResultHolder[T any] interface {
 	IsOk() bool
@@ -54,6 +57,14 @@ func (r Result[T]) IfError(consumer func(error)) {
 	if r.IsError() {
 		consumer(r.err)
 	}
+}
+
+func (r Result[T]) String() string {
+	if value, ok := r.Get(); ok {
+		return fmt.Sprintf("%v", value)
+	}
+
+	return r.err.Error()
 }
 
 func From[T any](value T, err error) Result[T] {
