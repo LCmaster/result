@@ -79,9 +79,10 @@ func Error[T any](err string) Result[T] {
 	return Result[T]{value: nil, err: errors.New(err)}
 }
 
-func Try(e error, resolve func(), catch func(error)) {
-	if e != nil {
+func Try(e error, success func(), catch func(error)) {
+	if e == nil {
+		success()
+	} else {
 		catch(e)
 	}
-	resolve()
 }
