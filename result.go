@@ -9,6 +9,7 @@ type ResultHolder[T any] interface {
 	IsOk() bool
 	IsError() bool
 	Get() (T, bool)
+	GetPtr() (*T, bool)
 	GetError() error
 	OrElse(T) T
 	OrElseGet(func() T) T
@@ -30,6 +31,9 @@ func (r Result[T]) IsError() bool {
 }
 func (r Result[T]) Get() (T, bool) {
 	return *r.value, r.IsOk()
+}
+func (r Result[T]) GetPtr() (*T, bool) {
+	return r.value, r.IsOk()
 }
 func (r Result[T]) GetError() error {
 	return r.err
@@ -69,6 +73,10 @@ func (r Result[T]) String() string {
 
 func From[T any](value T, err error) Result[T] {
 	return Result[T]{value: &value, err: err}
+}
+
+func FromPtr[T any](ptr *T, err error) Result[T] {
+	return Result[T]{value: ptr, err: err}
 }
 
 func Ok[T any](value T) Result[T] {
