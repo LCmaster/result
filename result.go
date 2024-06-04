@@ -1,7 +1,6 @@
 package result
 
 import (
-	"errors"
 	"fmt"
 )
 
@@ -83,8 +82,8 @@ func Ok[T any](value T) Result[T] {
 	return Result[T]{value: &value, err: nil}
 }
 
-func Error[T any](err string) Result[T] {
-	return Result[T]{value: nil, err: errors.New(err)}
+func Error[T any](err error) Result[T] {
+	return Result[T]{value: nil, err: err}
 }
 
 func Try(e error, success func(), catch ...func(error) bool) {
