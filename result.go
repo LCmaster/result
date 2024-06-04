@@ -79,10 +79,14 @@ func Error[T any](err string) Result[T] {
 	return Result[T]{value: nil, err: errors.New(err)}
 }
 
-func Try(e error, success func(), catch func(error)) {
+func Try(e error, success func(), catch ...func(error) bool) {
 	if e == nil {
 		success()
 	} else {
-		catch(e)
+		for _, errCatcher := range catch {
+			if errCatcher(e) {
+				return
+			}
+		}
 	}
 }
