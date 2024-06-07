@@ -75,7 +75,7 @@ func From[T any](value T, err error) Result[T] {
 }
 
 func FromPtr[T any](ptr *T, err error) Result[T] {
-	return Result[T]{value: ptr, err: err}
+	return From(*ptr, err)
 }
 
 func Ok[T any](value T) Result[T] {
