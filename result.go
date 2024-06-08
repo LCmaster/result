@@ -8,8 +8,7 @@ type ResultHolder[T any] interface {
 	IsOk() bool
 	IsError() bool
 	Get() (T, bool)
-	GetPtr() (*T, bool)
-	GetError() error
+	Error() error
 	OrElse(T) T
 	OrElseGet(func() T) T
 	IfOk(func(T))
@@ -31,10 +30,7 @@ func (r Result[T]) IsError() bool {
 func (r Result[T]) Get() (T, bool) {
 	return *r.value, r.IsOk()
 }
-func (r Result[T]) GetPtr() (*T, bool) {
-	return r.value, r.IsOk()
-}
-func (r Result[T]) GetError() error {
+func (r Result[T]) Error() error {
 	return r.err
 }
 func (r Result[T]) OrElse(other T) T {
